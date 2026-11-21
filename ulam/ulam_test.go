@@ -72,6 +72,8 @@ func TestUlam_String(t *testing.T) {
 		{"7", 7, "5 4 3\n6 1 2\n7    "},
 		{"8", 8, "5 4 3\n6 1 2\n7 8  "},
 		{"9", 9, "5 4 3\n6 1 2\n7 8 9"},
+		{"15", 15, "   15 14 13\n 5  4  3 12\n 6  1  2 11\n 7  8  9 10"},
+		{"17", 17, "17 16 15 14 13\n    5  4  3 12\n    6  1  2 11\n    7  8  9 10"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

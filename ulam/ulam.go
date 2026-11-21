@@ -2,8 +2,8 @@
 package ulam
 
 import (
+	"fmt"
 	"math"
-	"strconv"
 	"strings"
 )
 
@@ -35,15 +35,16 @@ func (u *Ulam) FillUlam() {
 }
 
 func (u *Ulam) String() string {
+	number_width := 1 + int(math.Log10(float64(u.n)))
 	lines := make([]string, 0, len(u.numbers))
 	for _, row_of_numbers := range(u.numbers) {
 		row_of_strings := make([]string, 0, len(row_of_numbers))
 		// Render each number. Use a space if 0. Skip line if all 0.
 		skip := true
 		for _, number := range(row_of_numbers) {
-			rendered_number := strconv.Itoa(number)
+			rendered_number := fmt.Sprintf("%*d", number_width, number)
 			if number == 0 {
-				rendered_number = " "
+				rendered_number = strings.Repeat(" ", number_width)
 			} else {
 				skip = false
 			}

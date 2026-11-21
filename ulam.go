@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	u := ulam.NewUlam(13)
+	u := ulam.NewUlam(141)
 	u.FillUlam()
 	fmt.Println(u)
 }
