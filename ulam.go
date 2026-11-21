@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"gerymate/ulam/spiral"
+	"gerymate/ulam/ulam"
 )
 
 func main() {
-	fmt.Println(spiral.Spiral(1))
+	u := ulam.NewUlam(13)
+	u.FillUlam()
+	fmt.Println(u)
 }
-
