@@ -1,8 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"gerymate/ulam/spiral"
+)
 
 func main() {
-	fmt.Println("Hello, Numbers!")
+	fmt.Println(spiral.Spiral(1))
 }
 
