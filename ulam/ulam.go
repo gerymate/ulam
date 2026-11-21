@@ -8,11 +8,13 @@ import (
 )
 
 type Ulam struct {
+	// Will hold the numbers up to (n) arranged in a spiral.
 	n       int
 	numbers [][]int
 }
 
 func NewUlam(n int) *Ulam {
+	// Constructor for Ulam object. Makes the required space.
 	dim := int(math.Ceil(math.Sqrt(float64(n))))
 
 	myUlam := Ulam{n: n}
@@ -24,6 +26,7 @@ func NewUlam(n int) *Ulam {
 }
 
 func (u *Ulam) FillUlam() {
+	// Fill the Ulam object with the natural numbers in a spiral.
 	dim := len(u.numbers)
 	x := (dim - 1) / 2
 	y := x + (dim-1)%2
@@ -35,6 +38,7 @@ func (u *Ulam) FillUlam() {
 }
 
 func (u *Ulam) String() string {
+	// Render the Ulam object.
 	number_width := 1 + int(math.Log10(float64(u.n)))
 	lines := make([]string, 0, len(u.numbers))
 	for _, row_of_numbers := range(u.numbers) {

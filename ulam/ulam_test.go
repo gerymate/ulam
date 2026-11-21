@@ -6,6 +6,7 @@ import (
 
 func TestUlam_NewUlam(t *testing.T) {
 	cases := []struct {
+		// in: numbers to make space for
 		in   int
 		want [][]int
 	}{
@@ -26,8 +27,8 @@ func TestUlam_NewUlam(t *testing.T) {
 
 func TestUlam_FillUlam(t *testing.T) {
 	tests := []struct {
-		name string // description of this test case
-		// Named input parameters for receiver constructor.
+		name string
+		// Fill the spiral up to (cn).
 		cn int
 		// Wanted output
 		want [][]int
@@ -58,8 +59,8 @@ func TestUlam_FillUlam(t *testing.T) {
 
 func TestUlam_String(t *testing.T) {
 	tests := []struct {
-		name string // description of this test case
-		// Named input parameters for receiver constructor.
+		name string
+		// Generate string output for a spiral of natural numbers up to (n).
 		n    int
 		want string
 	}{

@@ -6,12 +6,13 @@ import (
 
 func TestSpiralMove_NextMove(t *testing.T) {
 	tests := []struct {
-		name string // description of this test case
+		name string
 		// Named input parameters for receiver constructor.
 		x int
 		y int
 		// Number of calls
 		n     int
+		// Desired results
 		wantx int
 		wanty int
 	}{
@@ -30,7 +31,6 @@ func TestSpiralMove_NextMove(t *testing.T) {
 				s.NextMove()
 			}
 			gotx, goty := s.NextMove()
-			// TODO: update the condition below to compare got with tt.want.
 			if gotx != tt.wantx || goty != tt.wanty {
 				t.Errorf("NextMove() = %v, %v, want x: %v y: %v", gotx, goty, tt.wantx, tt.wanty)
 			}

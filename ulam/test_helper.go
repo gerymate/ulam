@@ -1,6 +1,7 @@
 package ulam
 
 func equalMatrices(first [][]int, second [][]int) bool {
+	// Check if two matrices of integer numbers are equal.
 	if len(first) != len(second) {
 		return false
 	}
