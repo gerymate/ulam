@@ -2,22 +2,23 @@
 package ulam
 
 import (
-	"fmt"
 	"math"
+	"strconv"
 	"strings"
 )
 
 type Ulam struct {
 	// Will hold the numbers up to (n) arranged in a spiral.
+	selector func(int)bool
 	n       int
 	numbers [][]int
 }
 
-func NewUlam(n int) *Ulam {
+func NewUlam(n int, selector func(int)bool) *Ulam {
 	// Constructor for Ulam object. Makes the required space.
 	dim := int(math.Ceil(math.Sqrt(float64(n))))
 
-	myUlam := Ulam{n: n}
+	myUlam := Ulam{n: n, selector: selector}
 	myUlam.numbers = make([][]int, dim)
 	for i := range dim {
 		myUlam.numbers[i] = make([]int, dim)
@@ -43,12 +44,16 @@ func (u *Ulam) String() string {
 	lines := make([]string, 0, len(u.numbers))
 	for _, row_of_numbers := range(u.numbers) {
 		row_of_strings := make([]string, 0, len(row_of_numbers))
-		// Render each number. Use a space if 0. Skip line if all 0.
+		// Render each number. Use spaces if 0. Skip line if all 0.
 		skip := true
 		for _, number := range(row_of_numbers) {
-			rendered_number := fmt.Sprintf("%*d", number_width, number)
+			// mark if it's important
+			selected := u.selector(number)
+			// use our formatter
+			rendered_number := format_number(number, number_width, selected)
+			// handle special cases, ie. when there's nothing to render
 			if number == 0 {
-				rendered_number = strings.Repeat(" ", number_width)
+				rendered_number = strings.Repeat(" ", number_width + 2)
 			} else {
 				skip = false
 			}
@@ -60,5 +65,18 @@ func (u *Ulam) String() string {
 		lines = append(lines, strings.Join(row_of_strings, " "))
 	}
 	return strings.Join(lines, "\n")
+}
+
+func format_number(n, width int, mark bool) string {
+	num_str := strconv.Itoa(n)
+	num_len := len(num_str)
+	open, close := " ", " "
+	if mark {
+		open = "("
+		close = ")"
+	}
+	post := (width - num_len) / 2 
+	pre := post + (width - num_len) % 2
+	return strings.Repeat(" ", pre) + open + num_str + close + strings.Repeat(" ", post)
 }
 
