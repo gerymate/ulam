@@ -1,11 +1,11 @@
-package ulam
+package spiral
 
 import (
 	"gerymate/ulam/sieve"
 	"testing"
 )
 
-func TestUlam_NewUlam(t *testing.T) {
+func TestSpiral_NewSpiral(t *testing.T) {
 	cases := []struct {
 		// in: numbers to make space for
 		in   int
@@ -19,17 +19,17 @@ func TestUlam_NewUlam(t *testing.T) {
 		{6, [][]int{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}},
 	}
 	for _, c := range cases {
-		selector := func(n int)bool {
+		selector := func(n int) bool {
 			return false
 		}
-		got := NewUlam(c.in, selector).numbers
+		got := NewSpiral(c.in, selector).numbers
 		if !equalMatrices(got, c.want) {
-			t.Errorf("NewUlam(%d)==%d, want: %d", c.in, got, c.want)
+			t.Errorf("NewSpiral(%d)==%d, want: %d", c.in, got, c.want)
 		}
 	}
 }
 
-func TestUlam_FillUlam(t *testing.T) {
+func TestSpiral_FillSpiral(t *testing.T) {
 	tests := []struct {
 		name string
 		// Fill the spiral up to (cn).
@@ -51,48 +51,14 @@ func TestUlam_FillUlam(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			selector := func(n int)bool {
+			selector := func(n int) bool {
 				return false
 			}
-			u := NewUlam(tt.cn, selector)
-			u.FillUlam()
-			got := u.numbers
+			sp := NewSpiral(tt.cn, selector)
+			sp.FillSpiral()
+			got := sp.numbers
 			if !equalMatrices(got, tt.want) {
-				t.Errorf("FillUlam on Ulam(%d)==%d, want: %d", tt.cn, got, tt.want)
-			}
-		})
-	}
-}
-
-func TestUlam_String_Integers(t *testing.T) {
-	tests := []struct {
-		name string
-		// Generate string output for a spiral of natural numbers up to (n).
-		n    int
-		want string
-	}{
-		{"1", 1, " 1 "},
-		{"2", 2, " 1   2 "},
-		{"3", 3, "     3 \n 1   2 "},
-		{"4", 4, " 4   3 \n 1   2 "},
-		{"5", 5, " 5   4   3 \n     1   2 "},
-		{"6", 6, " 5   4   3 \n 6   1   2 "},
-		{"7", 7, " 5   4   3 \n 6   1   2 \n 7         "},
-		{"8", 8, " 5   4   3 \n 6   1   2 \n 7   8     "},
-		{"9", 9, " 5   4   3 \n 6   1   2 \n 7   8   9 "},
-		{"15", 15, "      15   14   13 \n  5    4    3   12 \n  6    1    2   11 \n  7    8    9   10 "},
-		{"17", 17, " 17   16   15   14   13 \n       5    4    3   12 \n       6    1    2   11 \n       7    8    9   10 "},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			selector := func(n int)bool {
-				return false
-			}
-			u := NewUlam(tt.n, selector)
-			u.FillUlam()
-			got := u.String()
-			if got != tt.want {
-				t.Errorf("String() = \n%v\n, want \n%v", got, tt.want)
+				t.Errorf("FillSpiral on Spiral(%d)==%d, want: %d", tt.cn, got, tt.want)
 			}
 		})
 	}
@@ -169,12 +135,46 @@ func Test_format_number_mark(t *testing.T) {
 	}
 }
 
-func TestUlam_String_Primality(t *testing.T) {
+func TestSpiral_String_Integers(t *testing.T) {
+	tests := []struct {
+		name string
+		// Generate string output for a spiral of natural numbers up to (n).
+		n    int
+		want string
+	}{
+		{"1", 1, " 1 "},
+		{"2", 2, " 1   2 "},
+		{"3", 3, "     3 \n 1   2 "},
+		{"4", 4, " 4   3 \n 1   2 "},
+		{"5", 5, " 5   4   3 \n     1   2 "},
+		{"6", 6, " 5   4   3 \n 6   1   2 "},
+		{"7", 7, " 5   4   3 \n 6   1   2 \n 7         "},
+		{"8", 8, " 5   4   3 \n 6   1   2 \n 7   8     "},
+		{"9", 9, " 5   4   3 \n 6   1   2 \n 7   8   9 "},
+		{"15", 15, "      15   14   13 \n  5    4    3   12 \n  6    1    2   11 \n  7    8    9   10 "},
+		{"17", 17, " 17   16   15   14   13 \n       5    4    3   12 \n       6    1    2   11 \n       7    8    9   10 "},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			selector := func(n int) bool {
+				return false
+			}
+			sp := NewSpiral(tt.n, selector)
+			sp.FillSpiral()
+			got := sp.String()
+			if got != tt.want {
+				t.Errorf("String() = \n%v\n, want \n%v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestSpiral_String_Primality(t *testing.T) {
 	tests := []struct {
 		name string // description of this test case
 		// Named input parameters for receiver constructor.
-		n        int
-		want     string
+		n    int
+		want string
 	}{
 		{"1", 1, " 1 "},
 		{"2", 2, " 1  (2)"},
@@ -192,9 +192,9 @@ func TestUlam_String_Primality(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			s := sieve.NewSieve(tt.n)
 			selector := s.IsPrime
-			u := NewUlam(tt.n, selector)
-			u.FillUlam()
-			got := u.String()
+			sp := NewSpiral(tt.n, selector)
+			sp.FillSpiral()
+			got := sp.String()
 			if got != tt.want {
 				t.Errorf("String() = \n%v\n, want \n%v", got, tt.want)
 			}

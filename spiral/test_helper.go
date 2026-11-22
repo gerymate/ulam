@@ -1,4 +1,4 @@
-package ulam
+package spiral
 
 func equalMatrices(first [][]int, second [][]int) bool {
 	// Check if two matrices of integer numbers are equal.

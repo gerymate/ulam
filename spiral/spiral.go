@@ -1,5 +1,5 @@
 // Write the numbers in a spiral pattern
-package ulam
+package spiral
 
 import (
 	"math"
@@ -7,53 +7,53 @@ import (
 	"strings"
 )
 
-type Ulam struct {
+type Spiral struct {
 	// Will hold the numbers up to (n) arranged in a spiral.
-	selector func(int)bool
-	n       int
-	numbers [][]int
+	selector func(int) bool
+	n        int
+	numbers  [][]int
 }
 
-func NewUlam(n int, selector func(int)bool) *Ulam {
-	// Constructor for Ulam object. Makes the required space.
+func NewSpiral(n int, selector func(int) bool) *Spiral {
+	// Constructor for Spiral object. Makes the required space.
 	dim := int(math.Ceil(math.Sqrt(float64(n))))
 
-	myUlam := Ulam{n: n, selector: selector}
-	myUlam.numbers = make([][]int, dim)
+	mySpiral := Spiral{n: n, selector: selector}
+	mySpiral.numbers = make([][]int, dim)
 	for i := range dim {
-		myUlam.numbers[i] = make([]int, dim)
+		mySpiral.numbers[i] = make([]int, dim)
 	}
-	return &myUlam
+	return &mySpiral
 }
 
-func (u *Ulam) FillUlam() {
-	// Fill the Ulam object with the natural numbers in a spiral.
-	dim := len(u.numbers)
+func (sp *Spiral) FillSpiral() {
+	// Fill the Spiral object with the natural numbers.
+	dim := len(sp.numbers)
 	x := (dim - 1) / 2
 	y := x + (dim-1)%2
 	mover := NewSpiralMove(x, y)
-	for i := range u.n {
-		u.numbers[y][x] = i + 1
+	for i := range sp.n {
+		sp.numbers[y][x] = i + 1
 		x, y = mover.NextMove()
 	}
 }
 
-func (u *Ulam) String() string {
-	// Render the Ulam object.
-	number_width := 1 + int(math.Log10(float64(u.n)))
-	lines := make([]string, 0, len(u.numbers))
-	for _, row_of_numbers := range(u.numbers) {
+func (sp *Spiral) String() string {
+	// Render the Spiral object.
+	number_width := 1 + int(math.Log10(float64(sp.n)))
+	lines := make([]string, 0, len(sp.numbers))
+	for _, row_of_numbers := range sp.numbers {
 		row_of_strings := make([]string, 0, len(row_of_numbers))
 		// Render each number. Use spaces if 0. Skip line if all 0.
 		skip := true
-		for _, number := range(row_of_numbers) {
+		for _, number := range row_of_numbers {
 			// mark if it's important
-			selected := u.selector(number)
+			selected := sp.selector(number)
 			// use our formatter
 			rendered_number := format_number(number, number_width, selected)
 			// handle special cases, ie. when there's nothing to render
 			if number == 0 {
-				rendered_number = strings.Repeat(" ", number_width + 2)
+				rendered_number = strings.Repeat(" ", number_width+2)
 			} else {
 				skip = false
 			}
@@ -75,8 +75,7 @@ func format_number(n, width int, mark bool) string {
 		open = "("
 		close = ")"
 	}
-	post := (width - num_len) / 2 
-	pre := post + (width - num_len) % 2
+	post := (width - num_len) / 2
+	pre := post + (width-num_len)%2
 	return strings.Repeat(" ", pre) + open + num_str + close + strings.Repeat(" ", post)
 }
-

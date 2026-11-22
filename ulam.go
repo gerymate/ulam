@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"gerymate/ulam/sieve"
-	"gerymate/ulam/ulam"
+	"gerymate/ulam/spiral"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 		return
 	}
 	s := sieve.NewSieve(*n)
-	u := ulam.NewUlam(*n, s.IsPrime)
-	u.FillUlam()
+	u := spiral.NewSpiral(*n, s.IsPrime)
+	u.FillSpiral()
 	fmt.Println(u)
 }

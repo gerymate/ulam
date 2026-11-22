@@ -1,4 +1,4 @@
-package ulam
+package spiral
 
 const (
 	right = iota
