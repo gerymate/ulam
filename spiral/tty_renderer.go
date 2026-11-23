@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Highlightmodes
+// Highlightmode
 const (
 	Mark = iota
 	Invert
@@ -46,7 +46,7 @@ func (rr *TTYRenderer) Render() string {
 			// mark if it's important
 			selected := rr.selector(number)
 			// use our formatter
-			renderedNumber := formatNumber(number, numberWidth, selected, rr.config.OpenMark, rr.config.CloseMark)
+			renderedNumber := formatNumber(number, numberWidth, selected, rr.config.OpenMark, rr.config.CloseMark, Mark)
 			// handle special cases, ie. when there's nothing to render
 			if number == 0 {
 				renderedNumber = strings.Repeat(" ", numberWidth+2)
@@ -63,15 +63,29 @@ func (rr *TTYRenderer) Render() string {
 	return strings.Join(lines, "\n")
 }
 
-func formatNumber(n, width int, mark bool, openM, closeM string) string {
-	numStr := strconv.Itoa(n)
-	numLen := len(numStr)
+func formatNumber(n, maxWidth int, mark bool, openM, closeM string, highlightMode int) string {
 	open, close := " ", " "
 	if mark {
-		open = openM
-		close = closeM
+		switch highlightMode {
+		case Mark:
+			open = openM
+			close = closeM
+		case Invert:
+			open = "\x1b[7m"
+			close = "\033[27m"
+		case Erase:
+			return strings.Repeat(" ", maxWidth)
+		}
+	} else if highlightMode == EraseOthers {
+		return strings.Repeat(" ", maxWidth)
 	}
+	return open + alignNumber(n, maxWidth) + close		
+}
+
+func alignNumber(n, width int) string {
+	numStr := strconv.Itoa(n)
+	numLen := len(numStr)
 	post := (width - numLen) / 2
 	pre := post + (width - numLen) % 2
-	return strings.Repeat(" ", pre) + open + numStr + close + strings.Repeat(" ", post)
+	return strings.Repeat(" ", pre) + numStr + strings.Repeat(" ", post)
 }

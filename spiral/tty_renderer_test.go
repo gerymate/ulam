@@ -72,7 +72,6 @@ func TestTTYRenderer_Render_Primality(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func Test_formatNumber_no_mark(t *testing.T) {
@@ -107,7 +106,7 @@ func Test_formatNumber_no_mark(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := formatNumber(tt.n, tt.width, false, "(", ")")
+			got := formatNumber(tt.n, tt.width, false, "(", ")", Mark)
 			if got != tt.want {
 				t.Errorf("formatNumber() = '%v', want '%v'", got, tt.want)
 			}
@@ -138,7 +137,7 @@ func Test_formatNumber_mark(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := formatNumber(tt.n, tt.width, true, "(", ")")
+			got := formatNumber(tt.n, tt.width, true, "(", ")", Mark)
 			if got != tt.want {
 				t.Errorf("formatNumber() = '%v', want '%v'", got, tt.want)
 			}
@@ -152,16 +151,21 @@ func Test_formatNumber(t *testing.T) {
 		// Named input parameters for target function.
 		n      int
 		width  int
+		mark   bool
 		openM  string
 		closeM string
+		highlightMode int
 		want   string
 	}{
-		{"*8*", 8, 1, "*", "*", "*8*"},
-		{"[7]", 7, 1, "[", "]", "[7]"},
+		{"*8*", 8, 1, true, "*", "*", Mark, "*8*"},
+		{"[7]", 7, 1, true, "[", "]", Mark, "[7]"},
+		{"Invert 6", 6, 3, true, "", "", Invert, "\x1b[7m 6 \033[27m"},
+		{"Erase 5", 5, 3, true, "", "", Erase, "   "},
+		{"EraseOthers 4", 4, 2, false, "", "", EraseOthers, "  "},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := formatNumber(tt.n, tt.width, true, tt.openM, tt.closeM)
+			got := formatNumber(tt.n, tt.width, tt.mark, tt.openM, tt.closeM, tt.highlightMode)
 			if got != tt.want {
 				t.Errorf("formatNumber() = '%v', want '%v'", got, tt.want)
 			}
