@@ -8,13 +8,13 @@ import (
 )
 
 func main() {
-	n := flag.Int("n", 200, "generate Ulam's spiral up to n")
+	n := flag.Int("n", 150, "generate Ulam's spiral up to n")
 	h := flag.Bool("h", false, "get help")
 	m1 := flag.String("m1", "[", "opening mark")
 	m2 := flag.String("m2", "]", "closing mark")
 
-	var hlm spiral.HlMode
-	flag.Func("hlm", "highlight mode: mark|invert|erase|eraseothers (default mark)", func(s string) error {
+	hlm := spiral.Invert
+	flag.Func("hlm", "highlight mode: mark|invert|erase|eraseothers (default invert)", func(s string) error {
 		switch s {
 		case "mark":
 			hlm = spiral.Mark
@@ -38,12 +38,12 @@ func main() {
 	sv := sieve.NewSieve(*n)
 	sp := spiral.NewSpiral(*n)
 	sp.FillSpiral()
-	rr := spiral.DefaultTTYRenderer(sv.IsPrime, sp)
-	rr.Config = spiral.TTYRendererConfig{
+	config := spiral.TTYRendererConfig{
 		HighlightMode: hlm,
 		OpenMark:      *m1,
 		CloseMark:     *m2,
 	}
+	rr := spiral.NewTTYRenderer(sv.IsPrime, sp, config)
 
 	fmt.Println(rr.Render())
 }

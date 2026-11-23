@@ -46,14 +46,12 @@ func (rr *TTYRenderer) Render() string {
 	lines := make([]string, 0, len(rr.dataSource.numbers))
 	for _, rowOfNumbers := range rr.dataSource.numbers {
 		rowOfStrings := make([]string, 0, len(rowOfNumbers))
-		// Render each number. Mark selected ones. Use spaces if 0. Skip line if all 0.
+		// Render each number. Mark selected ones. Skip line if all 0.
 		skip := true
 		for _, number := range rowOfNumbers {
 			selected := rr.selector(number)
 			renderedNumber := formatNumber(number, numberWidth, selected, rr.Config.OpenMark, rr.Config.CloseMark, rr.Config.HighlightMode)
-			if number == 0 {
-				renderedNumber = strings.Repeat(" ", numberWidth+2)
-			} else {
+			if number != 0 {
 				skip = false
 			}
 			rowOfStrings = append(rowOfStrings, renderedNumber)
@@ -85,6 +83,12 @@ func formatNumber(n, maxWidth int, mark bool, openM, closeM string, highlightMod
 	} else if highlightMode == EraseOthers {
 		return strings.Repeat(" ", maxWidth + 2)
 	}
+	if n == 0 {
+		if highlightMode == Invert {
+			return strings.Repeat(" ", maxWidth)
+		}
+		return strings.Repeat(" ", maxWidth + 2)
+	}
 	return open + alignNumber(n, maxWidth) + close
 }
 
@@ -92,6 +96,6 @@ func alignNumber(n, width int) string {
 	numStr := strconv.Itoa(n)
 	numLen := len(numStr)
 	post := (width - numLen) / 2
-	pre := post + (width-numLen)%2
+	pre := post + (width - numLen ) % 2
 	return strings.Repeat(" ", pre) + numStr + strings.Repeat(" ", post)
 }

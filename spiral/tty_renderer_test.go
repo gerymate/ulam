@@ -175,10 +175,10 @@ func TestTTYRenderer_Render(t *testing.T) {
 		config     TTYRendererConfig
 		want       string
 	}{
-		{"Default", 3, TTYRendererConfig{Mark, "{", "}"}, "    {3}\n 1  {2}"},
+		{"Mark", 3, TTYRendererConfig{Mark, "{", "}"}, "    {3}\n 1  {2}"},
 		{"Erase", 3, TTYRendererConfig{Erase, "/", "|"}, "       \n 1     "},
 		{"EraseOthers", 3, TTYRendererConfig{EraseOthers, "", ""}, "     3 \n     2 "},
-		{"Invert", 3, TTYRendererConfig{Invert, " ", " "}, "    \x1b[7m3\033[27m\n1 \x1b[7m2\033[27m"},
+		{"Invert", 3, TTYRendererConfig{Invert, " ", " "}, "  \x1b[7m3\033[27m\n1 \x1b[7m2\033[27m"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
