@@ -13,8 +13,8 @@ func TestSpiralMove_NextMove(t *testing.T) {
 		// Number of calls
 		n     int
 		// Desired results
-		wantx int
-		wanty int
+		wantX int
+		wantY int
 	}{
 		{"From 2, 2, 1 times", 2, 2, 1, 3, 2},
 		{"From 2, 2, 2 times", 2, 2, 2, 3, 1},
@@ -30,9 +30,9 @@ func TestSpiralMove_NextMove(t *testing.T) {
 			for range tt.n - 1 {
 				s.NextMove()
 			}
-			gotx, goty := s.NextMove()
-			if gotx != tt.wantx || goty != tt.wanty {
-				t.Errorf("NextMove() = %v, %v, want x: %v y: %v", gotx, goty, tt.wantx, tt.wanty)
+			gotX, gotY := s.NextMove()
+			if gotX != tt.wantX || gotY != tt.wantY {
+				t.Errorf("NextMove() = %v, %v, want x: %v y: %v", gotX, gotY, tt.wantX, tt.wantY)
 			}
 		})
 	}

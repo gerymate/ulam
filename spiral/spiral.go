@@ -40,42 +40,42 @@ func (sp *Spiral) FillSpiral() {
 
 func (sp *Spiral) String() string {
 	// Render the Spiral object.
-	number_width := 1 + int(math.Log10(float64(sp.n)))
+	numberWidth := 1 + int(math.Log10(float64(sp.n)))
 	lines := make([]string, 0, len(sp.numbers))
-	for _, row_of_numbers := range sp.numbers {
-		row_of_strings := make([]string, 0, len(row_of_numbers))
+	for _, rowOfNumbers := range sp.numbers {
+		rowOfStrings := make([]string, 0, len(rowOfNumbers))
 		// Render each number. Use spaces if 0. Skip line if all 0.
 		skip := true
-		for _, number := range row_of_numbers {
+		for _, number := range rowOfNumbers {
 			// mark if it's important
 			selected := sp.selector(number)
 			// use our formatter
-			rendered_number := format_number(number, number_width, selected)
+			renderedNumber := formatNumber(number, numberWidth, selected)
 			// handle special cases, ie. when there's nothing to render
 			if number == 0 {
-				rendered_number = strings.Repeat(" ", number_width+2)
+				renderedNumber = strings.Repeat(" ", numberWidth + 2)
 			} else {
 				skip = false
 			}
-			row_of_strings = append(row_of_strings, rendered_number)
+			rowOfStrings = append(rowOfStrings, renderedNumber)
 		}
 		if skip {
 			continue
 		}
-		lines = append(lines, strings.Join(row_of_strings, " "))
+		lines = append(lines, strings.Join(rowOfStrings, " "))
 	}
 	return strings.Join(lines, "\n")
 }
 
-func format_number(n, width int, mark bool) string {
-	num_str := strconv.Itoa(n)
-	num_len := len(num_str)
+func formatNumber(n, width int, mark bool) string {
+	numStr := strconv.Itoa(n)
+	numLen := len(numStr)
 	open, close := " ", " "
 	if mark {
 		open = "("
 		close = ")"
 	}
-	post := (width - num_len) / 2
-	pre := post + (width-num_len)%2
-	return strings.Repeat(" ", pre) + open + num_str + close + strings.Repeat(" ", post)
+	post := (width - numLen) / 2
+	pre := post + (width - numLen) % 2
+	return strings.Repeat(" ", pre) + open + numStr + close + strings.Repeat(" ", post)
 }

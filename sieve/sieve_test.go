@@ -34,8 +34,8 @@ func TestSieve_IsPrime(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(strconv.Itoa(tt.n), func(t *testing.T) {
-			s := NewSieve(tt.n)
-			got := s.IsPrime(tt.n)
+			sv := NewSieve(tt.n)
+			got := sv.IsPrime(tt.n)
 			if got != tt.want {
 				t.Errorf("IsPrime(%v) = %v, want %v", tt.n, got, tt.want)
 			}
@@ -45,7 +45,7 @@ func TestSieve_IsPrime(t *testing.T) {
 
 func Test_removeNumber(t *testing.T) {
 	tests := []struct {
-		name string // description of this test case
+		name string
 		// Named input parameters for target function.
 		arr    []bool
 		number int

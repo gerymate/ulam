@@ -66,7 +66,7 @@ func TestSpiral_FillSpiral(t *testing.T) {
 
 func Test_format_number_no_mark(t *testing.T) {
 	tests := []struct {
-		name string // description of this test case
+		name string
 		// Named input parameters for target function.
 		n     int
 		width int
@@ -96,9 +96,9 @@ func Test_format_number_no_mark(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := format_number(tt.n, tt.width, false)
+			got := formatNumber(tt.n, tt.width, false)
 			if got != tt.want {
-				t.Errorf("format_number() = '%v', want '%v'", got, tt.want)
+				t.Errorf("formatNumber() = '%v', want '%v'", got, tt.want)
 			}
 		})
 	}
@@ -106,7 +106,7 @@ func Test_format_number_no_mark(t *testing.T) {
 
 func Test_format_number_mark(t *testing.T) {
 	tests := []struct {
-		name string // description of this test case
+		name string
 		// Named input parameters for target function.
 		n     int
 		width int
@@ -127,9 +127,9 @@ func Test_format_number_mark(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := format_number(tt.n, tt.width, true)
+			got := formatNumber(tt.n, tt.width, true)
 			if got != tt.want {
-				t.Errorf("format_number() = '%v', want '%v'", got, tt.want)
+				t.Errorf("formatNumber() = '%v', want '%v'", got, tt.want)
 			}
 		})
 	}
@@ -171,7 +171,7 @@ func TestSpiral_String_Integers(t *testing.T) {
 
 func TestSpiral_String_Primality(t *testing.T) {
 	tests := []struct {
-		name string // description of this test case
+		name string
 		// Named input parameters for receiver constructor.
 		n    int
 		want string

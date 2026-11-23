@@ -9,42 +9,42 @@ const (
 
 type SpiralMove struct {
 	// Handle movement in a spiral iterator style.
-	x, y, steps, steps_left, dir int
+	x, y, steps, stepsLeft, dir int
 }
 
 func NewSpiralMove(x, y int) *SpiralMove {
 	// Create new movement iterator. The origin of the spiral is (x, y).
-	return &SpiralMove{x: x, y: y, steps: 1, steps_left: 1, dir: right}
+	return &SpiralMove{x: x, y: y, steps: 1, stepsLeft: 1, dir: right}
 }
 
 func (s *SpiralMove) NextMove() (int, int) {
 	// Make one step in the spiral. First right, then up, then twice left, then twice down, then three times right, etc.
-	s.steps_left -= 1
+	s.stepsLeft -= 1
 	switch s.dir {
 	case right:
 		s.x += 1
-		if s.steps_left == 0 {
-			s.steps_left = s.steps
+		if s.stepsLeft == 0 {
+			s.stepsLeft = s.steps
 			s.dir = up
 		}
 	case up:
 		s.y -= 1
-		if s.steps_left == 0 {
+		if s.stepsLeft == 0 {
 			s.steps += 1
-			s.steps_left = s.steps
+			s.stepsLeft = s.steps
 			s.dir = left
 		}
 	case left:
 		s.x -= 1
-		if s.steps_left == 0 {
-			s.steps_left = s.steps
+		if s.stepsLeft == 0 {
+			s.stepsLeft = s.steps
 			s.dir = down
 		}
 	case down:
 		s.y += 1
-		if s.steps_left == 0 {
+		if s.stepsLeft == 0 {
 			s.steps += 1
-			s.steps_left = s.steps
+			s.stepsLeft = s.steps
 			s.dir = right
 		}
 	}

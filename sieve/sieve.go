@@ -52,5 +52,5 @@ func (s *Sieve)IsPrime(n int) bool {
 		return false
 	}
 
-	return s.primes[(n-3)/2]
+	return s.primes[(n - 3) / 2]
 }
