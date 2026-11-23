@@ -6,13 +6,32 @@ import (
 	"strings"
 )
 
+// Highlightmodes
+const (
+	Mark = iota
+	Invert
+	Erase
+	EraseOthers
+)
+
+type TTYRendererConfig struct {
+	HighlightMode int
+	OpenMark, CloseMark string
+}
+
 type TTYRenderer struct {
 	selector func(int) bool
 	dataSource *Spiral
+	config TTYRendererConfig
 }
 
 func NewTTYRenderer(selector func(int)bool, dataSource *Spiral) *TTYRenderer {
-	return &TTYRenderer{selector, dataSource}
+	rc := TTYRendererConfig{
+		HighlightMode: Mark,
+		OpenMark: "(",
+		CloseMark: ")",
+	}
+	return &TTYRenderer{selector, dataSource, rc}
 }
 
 func (rr *TTYRenderer) Render() string {
@@ -27,7 +46,7 @@ func (rr *TTYRenderer) Render() string {
 			// mark if it's important
 			selected := rr.selector(number)
 			// use our formatter
-			renderedNumber := formatNumber(number, numberWidth, selected)
+			renderedNumber := formatNumber(number, numberWidth, selected, rr.config.OpenMark, rr.config.CloseMark)
 			// handle special cases, ie. when there's nothing to render
 			if number == 0 {
 				renderedNumber = strings.Repeat(" ", numberWidth+2)
@@ -44,15 +63,15 @@ func (rr *TTYRenderer) Render() string {
 	return strings.Join(lines, "\n")
 }
 
-func formatNumber(n, width int, mark bool) string {
+func formatNumber(n, width int, mark bool, openM, closeM string) string {
 	numStr := strconv.Itoa(n)
 	numLen := len(numStr)
 	open, close := " ", " "
 	if mark {
-		open = "("
-		close = ")"
+		open = openM
+		close = closeM
 	}
 	post := (width - numLen) / 2
-	pre := post + (width-numLen)%2
+	pre := post + (width - numLen) % 2
 	return strings.Repeat(" ", pre) + open + numStr + close + strings.Repeat(" ", post)
 }
