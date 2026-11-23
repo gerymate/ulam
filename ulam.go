@@ -15,8 +15,9 @@ func main() {
 		flag.PrintDefaults()
 		return
 	}
-	s := sieve.NewSieve(*n)
-	u := spiral.NewSpiral(*n, s.IsPrime)
-	u.FillSpiral()
-	fmt.Println(u)
+	sv := sieve.NewSieve(*n)
+	sp := spiral.NewSpiral(*n)
+	sp.FillSpiral()
+	rr := spiral.NewTTYRenderer(sv.IsPrime, sp)
+	fmt.Println(rr.Render())
 }
