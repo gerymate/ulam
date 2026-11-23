@@ -65,9 +65,9 @@ func (rr *TTYRenderer) Render() string {
 }
 
 func formatNumber(n, maxWidth int, mark bool, openM, closeM string, highlightMode HlMode) string {
-	open, close := " ", " "
-	if highlightMode == Invert {
-		open, close = "", ""
+	open, close := "", ""
+	if highlightMode == Mark {
+		open, close = " ", " "
 	}
 	if mark {
 		switch highlightMode {
@@ -78,16 +78,16 @@ func formatNumber(n, maxWidth int, mark bool, openM, closeM string, highlightMod
 			open = "\x1b[7m"
 			close = "\033[27m"
 		case Erase:
-			return strings.Repeat(" ", maxWidth + 2)
-		}
-	} else if highlightMode == EraseOthers {
-		return strings.Repeat(" ", maxWidth + 2)
-	}
-	if n == 0 {
-		if highlightMode == Invert {
 			return strings.Repeat(" ", maxWidth)
 		}
-		return strings.Repeat(" ", maxWidth + 2)
+	} else if highlightMode == EraseOthers {
+		return strings.Repeat(" ", maxWidth)
+	}
+	if n == 0 {
+		if highlightMode == Mark {
+			return strings.Repeat(" ", maxWidth + 2)
+		}
+		return strings.Repeat(" ", maxWidth)
 	}
 	return open + alignNumber(n, maxWidth) + close
 }

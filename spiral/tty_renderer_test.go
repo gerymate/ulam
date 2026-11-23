@@ -154,8 +154,8 @@ func Test_formatNumber(t *testing.T) {
 		{"*8*", 8, 1, true, "*", "*", Mark, "*8*"},
 		{"[7]", 7, 1, true, "[", "]", Mark, "[7]"},
 		{"Invert 6", 6, 3, true, "", "", Invert, "\x1b[7m 6 \033[27m"},
-		{"Erase 5", 5, 3, true, "", "", Erase, "     "},
-		{"EraseOthers 4", 4, 2, false, "", "", EraseOthers, "    "},
+		{"Erase 5", 5, 3, true, "", "", Erase, "   "},
+		{"EraseOthers 4", -1, 2, false, "", "", EraseOthers, "  "},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -176,8 +176,8 @@ func TestTTYRenderer_Render(t *testing.T) {
 		want       string
 	}{
 		{"Mark", 3, TTYRendererConfig{Mark, "{", "}"}, "    {3}\n 1  {2}"},
-		{"Erase", 3, TTYRendererConfig{Erase, "/", "|"}, "       \n 1     "},
-		{"EraseOthers", 3, TTYRendererConfig{EraseOthers, "", ""}, "     3 \n     2 "},
+		{"Erase", 3, TTYRendererConfig{Erase, "/", "|"}, "   \n1  "},
+		{"EraseOthers", 3, TTYRendererConfig{EraseOthers, "", ""}, "  3\n  2"},
 		{"Invert", 3, TTYRendererConfig{Invert, " ", " "}, "  \x1b[7m3\033[27m\n1 \x1b[7m2\033[27m"},
 	}
 	for _, tt := range tests {
